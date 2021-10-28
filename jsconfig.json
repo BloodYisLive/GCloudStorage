@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "_assets": ["app/assets/*"],
+      "_components": ["app/components/*"],
+			"_constants": ["app/constants/*"],
+      //"_navigations": ["app/navigations/*"],
+			"_redux": ["app/redux/*"],
+			"_screens": ["app/screens/*"],
+		}
+  }
+}

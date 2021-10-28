@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "784035296388",
+    "project_id": "g-cloud-storage-application",
+    "storage_bucket": "g-cloud-storage-application.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:784035296388:android:de23644945e7c82641fed1",
+        "android_client_info": {
+          "package_name": "com.gcloudstorageapplication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "784035296388-tbb6lrnqfdlrv8affhb7c03e67iq9nc7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.gcloudstorageapplication",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "784035296388-p6hj45unf0sdg1912q7hrtu67fjnekel.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBxnHpv05uyEZH4FA7k0cN3BOc_gt-ugL4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "784035296388-p6hj45unf0sdg1912q7hrtu67fjnekel.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
