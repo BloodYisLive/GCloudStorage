@@ -1,6 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable prettier/prettier */
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React from 'react';
 import {
 	Image,
@@ -9,29 +8,30 @@ import {
 	TouchableOpacity,
 	View,
 } from 'react-native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import FeatherIcon from 'react-native-vector-icons/Feather';
+//import FeatherIcon from 'react-native-vector-icons/Feather';
 import {
 	Folders,
 	Storage,
 	Search,
 	Settings,
-} from '.';
-import { Header } from '../components';
+} from './TabScreens';
+import { Header, TabBarCustomButton } from '../components';
 import { COLORS, ICONS } from '../constants';
 
 const Tab = createBottomTabNavigator();
 
-const TabBarCustomButton = ({ children, onPress }) => {
-	return (
-		<TouchableOpacity
-			style={[styles.customTabBarButton]}
-			onPress={onPress}
-		>
-			{children}
-		</TouchableOpacity>
-	);
-};
+// const TabBarCustomButton = ({ children, onPress }) => {
+// 	return (
+// 		<TouchableOpacity
+// 			style={[styles.customTabBarButton]}
+// 			onPress={onPress}
+// 		>
+// 			{children}
+// 		</TouchableOpacity>
+// 	);
+// };
 
 const Files = () => {
 	return (
@@ -92,7 +92,7 @@ const Files = () => {
 						/>
 					),
 					tabBarButton: (props) => (
-						<TabBarCustomButton {...props} onPress={() => console.log('w')} />
+						<TabBarCustomButton {...props} />
 					),
 				}}
 			/>

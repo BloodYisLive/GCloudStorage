@@ -1,11 +1,11 @@
 /* eslint-disable prettier/prettier */
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 
 const Storage = () => {
 	return (
 		<View>
-			<Text>Storage File</Text>
+			<Text>Storage</Text>
 		</View>
 	);
 };
