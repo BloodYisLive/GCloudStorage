@@ -38,14 +38,16 @@ const Login = ({ navigation }) => {
 				<View style={[styles.inputBox]}>
 					<TextInput
 						placeholder="Enter Registerd Email..."
-						style={{ fontSize: SIZES.h2 }}
+						placeholderTextColor={`${COLORS.black}50`}
+						style={{ fontSize: SIZES.h2, color: COLORS.black }}
 						onChangeText={(e) => setEmail(e)}
 					/>
 				</View>
 				<View style={[styles.inputBox]}>
 					<TextInput
 						placeholder="Enter Password..."
-						style={{ fontSize: SIZES.h2 }}
+						placeholderTextColor={`${COLORS.black}50`}
+						style={{ fontSize: SIZES.h2, color: COLORS.black }}
 						onChangeText={(e) => setPassword(e)}
 					/>
 				</View>
