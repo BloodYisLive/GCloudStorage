@@ -14,14 +14,30 @@ export const addNewUser = async (user) => {
 	}
 };
 
-// export const createFolder = async (user) => {
-// 	try {
-// 		const dest = await firestore().collection('users').doc(`${user.id}/folders`);
-// 		dest.add({
-// 			createdAt: firestore.FieldValue.serverTimestamp(),
-// 			folderName: 
-// 		});
-// 	} catch (e) {
-// 		console.log(e);
-// 	}
-// };
+export const createFolder = async (userToken, folderName) => {
+	try {
+		const dest = await firestore().collection('users').doc(userToken).collection('folders');
+		dest.add({
+			createdAt: firestore.FieldValue.serverTimestamp(),
+			folderName: folderName,
+			updatedAt: firestore.FieldValue.serverTimestamp(),
+			items: 0,
+		});
+	} catch (e) {
+		console.log(e);
+	}
+};
+
+export const getUserFolders = async (userToken, dataRetrieved) => {
+	try {
+		await firestore().collection('users')
+			.doc(userToken).collection('folders')
+			.onSnapshot(snap => {
+				const folders = [];
+				snap.forEach(doc => folders.push({ ...doc.data(), id: doc.id }));
+				dataRetrieved(folders);
+			});
+	} catch (e) {
+		console.log(e);
+	}
+};

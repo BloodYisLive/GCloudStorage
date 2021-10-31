@@ -1,4 +1,4 @@
 /* eslint-disable prettier/prettier */
-import { addNewUser } from "./FirestoreAPI";
+import { addNewUser, createFolder, getUserFolders } from "./FirestoreAPI";
 
-export { addNewUser };
+export { addNewUser, createFolder, getUserFolders };
