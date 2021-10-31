@@ -5,14 +5,18 @@ import {
 	StyleSheet,
 	Text,
 	TextInput,
+	TouchableOpacity,
 } from 'react-native';
 import { COLORS, SIZES, width, height } from '../constants';
 import Svg, {
 	Circle,
 } from 'react-native-svg';
-
+import Icon from 'react-native-vector-icons/Entypo';
+import { NavigationContainer } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 const Header = (props) => {
-	const { headerText, searchShow } = props;
+	const navigation = useNavigation();
+	const { headerText, searchShow, backButton } = props;
 	return (
 		<View style={styles.container}>
 			<Svg height={searchShow ? height * 25 / 100 : height * 15 / 100} width={width}>
@@ -34,7 +38,25 @@ const Header = (props) => {
 					</View>
 				</View>
 			</Svg>
-		</View>
+			{backButton && <TouchableOpacity style={{
+				position: 'absolute',
+				left: 20,
+				bottom: 45,
+			}}
+				onPress={() => navigation.goBack()}
+			>
+				<Icon name="chevron-thin-left" size={25} color={COLORS.white} />
+			</TouchableOpacity>}
+			{backButton && <TouchableOpacity style={{
+				position: 'absolute',
+				right: 20,
+				bottom: 40,
+			}}
+				onPress={() => navigation.goBack()}
+			>
+				<Icon name="plus" size={35} color={COLORS.white} />
+			</TouchableOpacity>}
+		</View >
 	);
 };
 
