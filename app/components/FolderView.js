@@ -12,20 +12,23 @@ import Icon from 'react-native-vector-icons/Octicons';
 import { COLORS, ICONS, SIZES } from '../constants';
 
 const FolderView = (props) => {
+	const { folderName, onFolderPress } = props;
 	return (
 		<View style={styles.container}>
 			<TouchableOpacity style={{
 				flexDirection: 'row',
 				alignItems: 'center',
-			}}>
+			}}
+				onPress={onFolderPress}
+			>
 				<Image
 					source={ICONS.folder_solid}
 					style={styles.folderImage}
 				/>
-				<Text style={styles.folderName}>{props.folderName}</Text>
+				<Text style={styles.folderName}>{folderName}</Text>
 			</TouchableOpacity>
 			<TouchableOpacity>
-				<Icon name="kebab-vertical" size={25} />
+				<Icon name="kebab-vertical" size={25} color={`${COLORS.black}60`} />
 			</TouchableOpacity>
 		</View>
 	);
@@ -38,7 +41,7 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		alignItems: 'center',
-		marginHorizontal: 15,
+		margin: 15,
 	},
 	folderImage: {
 		height: 45,
