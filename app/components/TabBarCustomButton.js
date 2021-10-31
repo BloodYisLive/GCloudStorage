@@ -8,13 +8,22 @@ import {
 	Animated,
 	TouchableOpacity,
 	Pressable,
+	Modal,
+	Text,
+	TextInput,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
-import { COLORS } from '../constants';
-const TabBarCustomButton = ({ children, onPress }) => {
+import { useSelector } from 'react-redux';
+import { COLORS, width } from '../constants';
+import { createFolder } from '../api';
+
+const TabBarCustomButton = ({ children, onUploadDocPress }) => {
+	const currentUserToken = useSelector((state) => state.auth.userToken);
 	const buttonSize = useRef(new Animated.Value(1)).current;
 	const mode = useRef(new Animated.Value(0)).current;
 	const [flag, setFlag] = useState(false);
+	const [modalVisible, setModalVisible] = useState(false);
+	const [folderName, setFolderName] = useState('');
 
 	const handlePress = async () => {
 		await Animated.sequence([
@@ -34,7 +43,6 @@ const TabBarCustomButton = ({ children, onPress }) => {
 			}),
 		]).start();
 		setFlag(!flag);
-		console.log(flag);
 	};
 
 	const sizeStyle = {
@@ -65,12 +73,65 @@ const TabBarCustomButton = ({ children, onPress }) => {
 
 	return (
 		<View style={styles.container}>
+			<Modal
+				animationType="slide"
+				transparent={true}
+				visible={modalVisible}
+				onRequestClose={() => {
+					setModalVisible(!modalVisible);
+				}}
+			>
+				<View style={styles.centeredView}>
+					<View style={styles.modalView}>
+						<Text style={styles.modalText}>New Folder</Text>
+						<TextInput
+							style={styles.createFolderTextInput}
+							placeholder="Enter folder name..."
+							onChangeText={(e) => setFolderName(e)}
+							value={folderName}
+						/>
+						<View style={styles.modalButtonContainer}>
+							<TouchableOpacity
+								style={styles.modalButtons}
+								onPress={() => {
+									setModalVisible(false);
+									setFolderName('');
+								}}
+							>
+								<Text style={{
+									fontSize: 16,
+									fontWeight: 'bold',
+									color: COLORS.black,
+								}}>CANCEL</Text>
+							</TouchableOpacity>
+							<TouchableOpacity style={[styles.modalButtons, {
+								backgroundColor: COLORS.primary,
+								borderRadius: 5,
+							}]}
+								onPress={() => {
+									createFolder(currentUserToken, folderName);
+									setModalVisible(false);
+									setFolderName('');
+								}}
+							>
+								<Text style={{
+									fontSize: 16,
+									fontWeight: 'bold',
+									color: COLORS.white,
+									paddingHorizontal: 20,
+									paddingVertical: 10,
+								}}>CREATE</Text>
+							</TouchableOpacity>
+						</View>
+					</View>
+				</View>
+			</Modal>
 			<Animated.View style={{
 				position: 'absolute',
 				left: createFolderX,
 				top: createFolderY,
 			}}>
-				<TouchableOpacity style={styles.secondaryButton}>
+				<TouchableOpacity style={styles.secondaryButton} onPress={() => setModalVisible(true)}>
 					<Icon name="folder-plus" size={25} color={COLORS.white} />
 				</TouchableOpacity>
 			</Animated.View>
@@ -79,7 +140,7 @@ const TabBarCustomButton = ({ children, onPress }) => {
 				left: uploadDocX,
 				top: uploadDocY,
 			}}>
-				<TouchableOpacity style={styles.secondaryButton}>
+				<TouchableOpacity style={styles.secondaryButton} onPress={onUploadDocPress}>
 					<Icon name="upload" size={25} color={COLORS.white} />
 				</TouchableOpacity>
 			</Animated.View>
@@ -120,5 +181,50 @@ const styles = StyleSheet.create({
 		borderRadius: 24,
 		justifyContent: 'center',
 		alignItems: 'center',
+	},
+	centeredView: {
+		flex: 1,
+		justifyContent: 'center',
+		alignItems: 'center',
+		marginTop: 22,
+	},
+	modalView: {
+		margin: 20,
+		backgroundColor: COLORS.white,
+		borderRadius: 10,
+		padding: 35,
+		shadowColor: COLORS.black,
+		shadowOffset: {
+			width: 0,
+			height: 2,
+		},
+		shadowOpacity: 0.25,
+		shadowRadius: 4,
+		elevation: 5,
+		width: width * 90 / 100,
+		justifyContent: 'flex-start',
+	},
+	modalText: {
+		fontSize: 20,
+		color: COLORS.black,
+		marginBottom: 20,
+	},
+	createFolderTextInput: {
+		borderWidth: 2,
+		borderColor: COLORS.primary,
+		color: COLORS.black,
+		fontSize: 20,
+		paddingHorizontal: 10,
+		paddingVertical: 5,
+		width: '100%',
+	},
+	modalButtonContainer: {
+		flexDirection: 'row',
+		marginTop: 20,
+		justifyContent: 'flex-end',
+		alignItems: 'center',
+	},
+	modalButtons: {
+		marginHorizontal: 15,
 	},
 });
