@@ -6,11 +6,29 @@ import { useSelector } from 'react-redux';
 import {
 	Login,
 	Register,
+	FolderContents,
+	Folders,
 } from '../screens';
 import { TabNavigation } from '../navigations';
-import { FolderContents } from '../screens';
 import { Header } from '../components';
 const Stack = createNativeStackNavigator();
+
+export const FolderStackNavigation = () => {
+	return(
+	<Stack.Navigator>
+		<Stack.Screen name="Folders" component={Folders} 
+			options={{
+				header: props => <Header headerText="Folders" />,
+			}}
+		/>
+		<Stack.Screen name="Folder Items" component={FolderContents}
+			options={{
+				header: props => <Header headerText="Folders Items" backButton={true} />,
+			}}
+		/>
+	</Stack.Navigator>
+	)
+}
 
 const RootNavigation = () => {
 	const userToken = useSelector((state) => state.auth.userToken);
@@ -32,14 +50,6 @@ const RootNavigation = () => {
 					}}
 				>
 					<Stack.Screen name="Files" component={TabNavigation} />
-					<Stack.Screen
-						name="Folder Contents"
-						component={FolderContents}
-						options={{
-							headerShown: true,
-							header: props => <Header headerText="Folder Items" backButton={true} />,
-						}}
-					/>
 				</Stack.Navigator>}
 		</NavigationContainer>
 	);

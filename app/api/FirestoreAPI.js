@@ -1,6 +1,7 @@
 /* eslint-disable prettier/prettier */
 import firestore from '@react-native-firebase/firestore';
-
+import storage from '@react-native-firebase/storage';
+import RNFS from 'react-native-fs';
 export const addNewUser = async (user) => {
 	try {
 		const usersCollection = await firestore().collection('users').doc(user.id);
@@ -41,3 +42,48 @@ export const getUserFolders = async (userToken, dataRetrieved) => {
 		console.log(e);
 	}
 };
+
+export const uploadDocToStorage = async (userId, fileName, filePath) => {
+	try{
+		const destPath = `${RNFS.TemporaryDirectoryPath}/${fileName}`;
+		console.log(filePath, destPath)
+		await RNFS.copyFile(filePath, destPath);
+		await RNFS.stat(destPath).then(async(result) => {
+			const reference = storage().ref(userId).child(fileName);
+			const task = reference.putFile(result.path);
+			task.then(() => {
+				console.log('File Uploaded');
+			})
+		})
+	}catch(err) {
+		console.log(err);
+	}
+}
+
+export const uploadDocToFirestore = async (userId, folderId, fileName, fileSize) => {
+	try{
+		const dest = await firestore().collection('users').doc(userId).collection('folders').doc(folderId).collection('items');
+		dest.add({
+			createdAt: firestore.FieldValue.serverTimestamp(),
+			fileName: fileName,
+			fileSize: fileSize,
+			updatedAt: firestore.FieldValue.serverTimestamp(),
+		});
+	}catch(err){
+		console.log(err);
+	}
+}
+
+export const getFolderItems = async (userToken, folderId, dataRetrieved) => {
+	try{
+		await firestore().collection('users')
+			.doc(userToken).collection('folders').doc(folderId).collection('items')
+			.onSnapshot(snap => {
+				const items = [];
+				snap.forEach(doc => items.push({ ...doc.data(), id: doc.id }));
+				dataRetrieved(items);
+			});
+	}catch(err) {
+		console.log(err);
+	}
+}

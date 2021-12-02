@@ -7,6 +7,7 @@ import {
 	StyleSheet,
 	TouchableOpacity,
 	TextInput,
+	Platform
 } from 'react-native';
 import auth from '@react-native-firebase/auth';
 import { useDispatch } from 'react-redux';
@@ -82,6 +83,7 @@ const styles = StyleSheet.create({
 	inputBox: {
 		width: width * 85 / 100,
 		paddingHorizontal: 10,
+		paddingVertical: Platform.OS === "android" ? 0 : 12,
 		marginVertical: 10,
 		borderRadius: 36,
 		backgroundColor: COLORS.white,

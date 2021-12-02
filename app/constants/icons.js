@@ -8,4 +8,6 @@ export const ICONS = {
 	search_thin: require('../assets/icons/search-thin.png'),
 	pie_fill: require('../assets/icons/pie-fill.png'),
 	pie_outline: require('../assets/icons/pie-outline.png'),
+	doc_logo: require('../assets/icons/docLogo.png'),
+	image_logo: require('../assets/icons/imageLogo.png'),
 };

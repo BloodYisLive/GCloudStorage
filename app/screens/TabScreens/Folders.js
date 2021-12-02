@@ -6,13 +6,14 @@ import {
 	StyleSheet,
 	FlatList,
 } from 'react-native';
+import { currentFolderName } from '../../redux/actions';
 import { FolderView } from '../../components';
 import { getUserFolders } from '../../api';
-import { useSelector } from 'react-redux';
-import { NavigationContainer } from '@react-navigation/native';
+import { useDispatch, useSelector } from 'react-redux';
 
 const Folders = ({ navigation }) => {
 	const currentUserToken = useSelector((state) => state.auth.userToken);
+	const dispatch = useDispatch();
 	const [folders, setFolders] = useState([]);
 	useEffect(() => {
 		getUserFolders(currentUserToken, getUsersFolders);
@@ -30,8 +31,13 @@ const Folders = ({ navigation }) => {
 					return (
 						<FolderView
 							folderName={item.folderName}
-							onFolderPress={() => navigation.navigate('Folder Contents')}
-
+							onFolderPress={() => {
+								navigation.navigate('Folder Items', {
+								id: item.id,
+								folderName: item.folderName,
+							})
+							dispatch(currentFolderName(item.id))
+						}}
 						/>
 					);
 				}}

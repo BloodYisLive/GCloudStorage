@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable prettier/prettier */
-import React from 'react';
+import React, {useState} from 'react';
 import {
 	Image,
 	StyleSheet,
@@ -12,7 +12,8 @@ import Icon from 'react-native-vector-icons/Octicons';
 import { COLORS, ICONS, SIZES } from '../constants';
 
 const FolderView = (props) => {
-	const { folderName, onFolderPress } = props;
+	const [isVisible, setIsVisible] = useState(false);
+	const { folderName, onFolderPress, onDeletePress } = props;
 	return (
 		<View style={styles.container}>
 			<TouchableOpacity style={{
@@ -27,9 +28,14 @@ const FolderView = (props) => {
 				/>
 				<Text style={styles.folderName}>{folderName}</Text>
 			</TouchableOpacity>
-			<TouchableOpacity>
+			<TouchableOpacity onPress={() => setIsVisible(!isVisible)}>
 				<Icon name="kebab-vertical" size={25} color={`${COLORS.black}60`} />
 			</TouchableOpacity>
+			{isVisible && <View style={styles.DeleteContainer}>
+				<TouchableOpacity onPress={onDeletePress}>
+					<Text style={styles.deleteContainerText}>Delete</Text>
+				</TouchableOpacity>
+			</View>}
 		</View>
 	);
 };
@@ -54,4 +60,16 @@ const styles = StyleSheet.create({
 		fontWeight: 'bold',
 		marginLeft: 15,
 	},
+	DeleteContainer: {
+		position: 'absolute',
+		right: 10,
+		top: 10,
+		elevation: 10,
+		backgroundColor: COLORS.white,
+		paddingHorizontal: 40,
+		paddingVertical: 8,
+	},
+	deleteContainerText: {
+		color: COLORS.black,
+	}
 });

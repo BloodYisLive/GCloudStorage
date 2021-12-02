@@ -16,6 +16,7 @@ import {
 } from '../screens/TabScreens';
 import { Header, TabBarCustomButton } from '../components';
 import { COLORS, ICONS } from '../constants';
+import { FolderStackNavigation } from './StackNavigation';
 
 const Tab = createBottomTabNavigator();
 
@@ -38,8 +39,9 @@ const Files = () => {
 		>
 			<Tab.Screen
 				name="Folders"
-				component={Folders}
+				component={FolderStackNavigation}
 				options={{
+					headerShown: false,
 					tabBarIcon: ({ focused }) => (
 						<Image
 							source={focused ? ICONS.folder_solid : ICONS.folder_outline}
@@ -48,7 +50,6 @@ const Files = () => {
 							}]}
 						/>
 					),
-					header: props => <Header headerText="Folders" />,
 				}}
 			/>
 			<Tab.Screen

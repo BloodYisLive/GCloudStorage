@@ -11,3 +11,10 @@ export const LogoutUser = () => {
 		type: 'LOGOUT_USER',
 	};
 };
+
+export const currentFolderName = data => {
+	return {
+		type: 'CURRENT_FOLDER',
+		data,
+	}
+}

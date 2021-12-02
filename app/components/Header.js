@@ -7,16 +7,18 @@ import {
 	TextInput,
 	TouchableOpacity,
 } from 'react-native';
+import { currentFolderName } from '../redux/actions';
 import { COLORS, SIZES, width, height } from '../constants';
 import Svg, {
 	Circle,
 } from 'react-native-svg';
 import Icon from 'react-native-vector-icons/Entypo';
-import { NavigationContainer } from '@react-navigation/native';
+import { useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 const Header = (props) => {
 	const navigation = useNavigation();
 	const { headerText, searchShow, backButton } = props;
+	const dispatch = useDispatch();
 	return (
 		<View style={styles.container}>
 			<Svg height={searchShow ? height * 25 / 100 : height * 15 / 100} width={width}>
@@ -43,18 +45,12 @@ const Header = (props) => {
 				left: 20,
 				bottom: 45,
 			}}
-				onPress={() => navigation.goBack()}
+				onPress={() => {
+					navigation.goBack();
+					dispatch(currentFolderName(''))
+				}}
 			>
 				<Icon name="chevron-thin-left" size={25} color={COLORS.white} />
-			</TouchableOpacity>}
-			{backButton && <TouchableOpacity style={{
-				position: 'absolute',
-				right: 20,
-				bottom: 40,
-			}}
-				onPress={() => navigation.goBack()}
-			>
-				<Icon name="plus" size={35} color={COLORS.white} />
 			</TouchableOpacity>}
 		</View >
 	);

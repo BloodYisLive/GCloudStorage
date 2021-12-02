@@ -15,10 +15,11 @@ import {
 import Icon from 'react-native-vector-icons/Feather';
 import { useSelector } from 'react-redux';
 import { COLORS, width } from '../constants';
-import { createFolder } from '../api';
+import { createFolder, openDocSelector } from '../api';
 
 const TabBarCustomButton = ({ children, onUploadDocPress }) => {
 	const currentUserToken = useSelector((state) => state.auth.userToken);
+	const currentFolderName = useSelector((state) => state.currentFolder.currentFolderName)
 	const buttonSize = useRef(new Animated.Value(1)).current;
 	const mode = useRef(new Animated.Value(0)).current;
 	const [flag, setFlag] = useState(false);
@@ -140,7 +141,7 @@ const TabBarCustomButton = ({ children, onUploadDocPress }) => {
 				left: uploadDocX,
 				top: uploadDocY,
 			}}>
-				<TouchableOpacity style={styles.secondaryButton} onPress={onUploadDocPress}>
+				<TouchableOpacity style={styles.secondaryButton} onPress={() => openDocSelector(currentUserToken, currentFolderName)}>
 					<Icon name="upload" size={25} color={COLORS.white} />
 				</TouchableOpacity>
 			</Animated.View>
@@ -159,7 +160,6 @@ export default TabBarCustomButton;
 
 const styles = StyleSheet.create({
 	container: {
-		//position: 'absolute',
 		alignItems: 'center',
 	},
 	customTabBarButton: {
