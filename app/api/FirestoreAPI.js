@@ -34,34 +34,37 @@ export const getUserFolders = async (userToken, dataRetrieved) => {
 		await firestore().collection('users')
 			.doc(userToken).collection('folders')
 			.onSnapshot(snap => {
-				const folders = [];
-				snap.forEach(doc => folders.push({ ...doc.data(), id: doc.id }));
-				dataRetrieved(folders);
+				if (snap !== null) {
+					const folders = [];
+					snap.forEach(doc => folders.push({ ...doc.data(), id: doc.id }));
+					dataRetrieved(folders);
+				}
 			});
 	} catch (e) {
 		console.log(e);
 	}
 };
 
-export const uploadDocToStorage = async (userId, fileName, filePath) => {
-	try{
+export const uploadDocToStorage = async (userId, fileName, filePath, folderId, fileSize) => {
+	try {
 		const destPath = `${RNFS.TemporaryDirectoryPath}/${fileName}`;
-		console.log(filePath, destPath)
+		console.log(filePath, destPath);
 		await RNFS.copyFile(filePath, destPath);
-		await RNFS.stat(destPath).then(async(result) => {
+		await RNFS.stat(destPath).then(async (result) => {
 			const reference = storage().ref(userId).child(fileName);
 			const task = reference.putFile(result.path);
 			task.then(() => {
+				uploadDocToFirestore(userId, folderId, fileName, fileSize);
 				console.log('File Uploaded');
-			})
-		})
-	}catch(err) {
+			});
+		});
+	} catch (err) {
 		console.log(err);
 	}
-}
+};
 
 export const uploadDocToFirestore = async (userId, folderId, fileName, fileSize) => {
-	try{
+	try {
 		const dest = await firestore().collection('users').doc(userId).collection('folders').doc(folderId).collection('items');
 		dest.add({
 			createdAt: firestore.FieldValue.serverTimestamp(),
@@ -69,21 +72,55 @@ export const uploadDocToFirestore = async (userId, folderId, fileName, fileSize)
 			fileSize: fileSize,
 			updatedAt: firestore.FieldValue.serverTimestamp(),
 		});
-	}catch(err){
+	} catch (err) {
 		console.log(err);
 	}
-}
+};
 
 export const getFolderItems = async (userToken, folderId, dataRetrieved) => {
-	try{
+	try {
 		await firestore().collection('users')
 			.doc(userToken).collection('folders').doc(folderId).collection('items')
 			.onSnapshot(snap => {
-				const items = [];
-				snap.forEach(doc => items.push({ ...doc.data(), id: doc.id }));
-				dataRetrieved(items);
+				if (snap !== null) {
+					const items = [];
+					snap.forEach(doc => items.push({ ...doc.data(), id: doc.id }));
+					dataRetrieved(items);
+				}
 			});
-	}catch(err) {
+	} catch (err) {
 		console.log(err);
 	}
-}
+};
+
+export const deleteFolder = async (userToken, folderId) => {
+	try {
+		await firestore().collection('users')
+			.doc(userToken).collection('folders').doc(folderId).delete()
+			.then(() => console.log('Folder Deleted'));
+	} catch (err) {
+		console.log(err);
+	}
+};
+
+export const deleteFolderItems = async (userId, fileName, folderId, itemId) => {
+	try {
+		const reference = await storage().ref(userId).child(fileName);
+		reference.delete().then(() => {
+			deleteFolderItemsFromFirestore(userId, folderId, itemId);
+		});
+	} catch (err) {
+		console.log(err);
+	}
+};
+
+export const deleteFolderItemsFromFirestore = async (userId, folderId, itemId) => {
+	try {
+		await firestore().collection('users')
+			.doc(userId).collection('folders').doc(folderId).collection('items').doc(itemId).delete()
+			.then(() => console.log('Item Deleted'));
+	} catch (err) {
+		console.log(err);
+	}
+};
+

@@ -1,19 +1,20 @@
-import DocumentPicker from 'react-native-document-picker'
-import { uploadDocToFirestore, uploadDocToStorage } from './FirestoreAPI'
+/* eslint-disable prettier/prettier */
+import DocumentPicker from 'react-native-document-picker';
+import { uploadDocToFirestore, uploadDocToStorage } from './FirestoreAPI';
 
 export const openDocSelector = async (userId, folderId) => {
-try {
+    try {
         const res = await DocumentPicker.pickSingle({
             type: [DocumentPicker.types.allFiles],
-        })
+        });
         console.log(res.name, res.uri);
-        uploadDocToStorage(userId, res.name, res.uri)
-        uploadDocToFirestore(userId, folderId, res.name, res.size)
-        } catch (err) {
+        uploadDocToStorage(userId, res.name, res.uri, folderId, res.size);
+        //uploadDocToFirestore(userId, folderId, res.name, res.size);
+    } catch (err) {
         if (DocumentPicker.isCancel(err)) {
             // User cancelled the picker, exit any dialogs or menus and move on
         } else {
-            throw err
+            throw err;
         }
     }
-}
+};

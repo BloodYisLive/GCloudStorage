@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import { currentFolderName } from '../../redux/actions';
 import { FolderView } from '../../components';
-import { getUserFolders } from '../../api';
+import { getUserFolders, deleteFolder } from '../../api';
 import { useDispatch, useSelector } from 'react-redux';
 
 const Folders = ({ navigation }) => {
@@ -33,11 +33,14 @@ const Folders = ({ navigation }) => {
 							folderName={item.folderName}
 							onFolderPress={() => {
 								navigation.navigate('Folder Items', {
-								id: item.id,
-								folderName: item.folderName,
-							})
-							dispatch(currentFolderName(item.id))
-						}}
+									id: item.id,
+									folderName: item.folderName,
+								});
+								dispatch(currentFolderName(item.id));
+							}}
+							onDeletePress={() => {
+								deleteFolder(currentUserToken, item.id);
+							}}
 						/>
 					);
 				}}

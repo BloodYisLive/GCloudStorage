@@ -10,4 +10,6 @@ export const ICONS = {
 	pie_outline: require('../assets/icons/pie-outline.png'),
 	doc_logo: require('../assets/icons/docLogo.png'),
 	image_logo: require('../assets/icons/imageLogo.png'),
+	eye_open: require('../assets/icons/eye_open.png'),
+	eye_close: require('../assets/icons/eye_close.png'),
 };

@@ -7,13 +7,13 @@ import {
 	FlatList,
 } from 'react-native';
 import { COLORS } from '_constants';
-import {FolderItemView} from '_components';
-import { getFolderItems } from '../../api';
+import { FolderItemView } from '_components';
+import { getFolderItems, deleteFolderItems } from '../../api';
 import { useSelector } from 'react-redux';
 import _ from 'lodash';
 
-const FolderContents = ({route}) => {
-	const {id, folderName} = route.params;
+const FolderContents = ({ route }) => {
+	const { id, folderName } = route.params;
 	const currentUserToken = useSelector((state) => state.auth.userToken);
 	const [folderItems, setFolderItems] = useState([]);
 	const [filteredItems, setFilteredItems] = useState([]);
@@ -27,9 +27,9 @@ const FolderContents = ({route}) => {
 		setFolderItems(data);
 	}
 	const checkExtension = async () => {
-		const arr = await _.flatMap(folderItems, function(res) {
+		const arr = await _.flatMap(folderItems, function (res) {
 			const isImage = (/(gif|jpe?g|tiff?|png|webp|bmp)$/i).test(res.fileName);
-			return [{...res, isImage: isImage}];
+			return [{ ...res, isImage: isImage }];
 		});
 		setFilteredItems(arr);
 		console.log(arr);
@@ -43,12 +43,15 @@ const FolderContents = ({route}) => {
 		<View style={styles.container}>
 			<FlatList
 				data={filteredItems}
-				keyExtractor={({id}, index) => id}
-				renderItem={({item}) => {
-					return(
+				keyExtractor={({ id }, index) => id}
+				renderItem={({ item }) => {
+					return (
 						<FolderItemView
 							itemName={item.fileName}
 							isImage={item.isImage}
+							onDeletePress={() => {
+								deleteFolderItems(currentUserToken, item.fileName, id, item.id);
+							}}
 						/>
 					)
 				}}

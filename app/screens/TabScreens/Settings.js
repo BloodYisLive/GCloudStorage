@@ -8,11 +8,15 @@ import {
 } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { LogoutUser } from '../../redux/actions';
+import auth from '@react-native-firebase/auth';
 
 const Settings = () => {
 	const dispatch = useDispatch();
 	const logoutUser = () => {
-		dispatch(LogoutUser());
+		auth()
+			.signOut()
+			.then(() => dispatch(LogoutUser()));
+
 	};
 
 	return (

@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable prettier/prettier */
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
 	Image,
 	StyleSheet,
@@ -28,7 +28,7 @@ const FolderView = (props) => {
 				/>
 				<Text style={styles.folderName}>{folderName}</Text>
 			</TouchableOpacity>
-			<TouchableOpacity onPress={() => setIsVisible(!isVisible)}>
+			<TouchableOpacity onPress={() => setIsVisible(!isVisible)} style={{ padding: 5 }}>
 				<Icon name="kebab-vertical" size={25} color={`${COLORS.black}60`} />
 			</TouchableOpacity>
 			{isVisible && <View style={styles.DeleteContainer}>
@@ -62,8 +62,8 @@ const styles = StyleSheet.create({
 	},
 	DeleteContainer: {
 		position: 'absolute',
-		right: 10,
-		top: 10,
+		right: 20,
+		top: 0,
 		elevation: 10,
 		backgroundColor: COLORS.white,
 		paddingHorizontal: 40,

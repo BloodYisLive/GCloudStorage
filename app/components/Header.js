@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 /* eslint-disable prettier/prettier */
 import React from 'react';
 import {
@@ -30,24 +31,32 @@ const Header = (props) => {
 				/>
 				<View>
 					<View style={[styles.subContainer, {
-						height: searchShow ? (height * 24 / 100) : (height * 14 / 100),
+						height: (height * 14 / 100),
 					}]}>
 						<Text style={styles.headerTitle}>{headerText}</Text>
-						{searchShow && <TextInput
-							style={styles.searchInput}
-							placeholder="Search files by file name..."
-						/>}
 					</View>
 				</View>
 			</Svg>
+			{searchShow &&
+				<View style={{
+					position: 'absolute',
+					bottom: 25,
+				}}>
+					<TextInput
+						style={styles.searchInput}
+						placeholderTextColor={COLORS.lightBlack}
+						placeholder="Search files by file name..."
+					/>
+				</View>
+			}
 			{backButton && <TouchableOpacity style={{
 				position: 'absolute',
 				left: 20,
-				bottom: 45,
+				bottom: 51,
 			}}
 				onPress={() => {
 					navigation.goBack();
-					dispatch(currentFolderName(''))
+					dispatch(currentFolderName(''));
 				}}
 			>
 				<Icon name="chevron-thin-left" size={25} color={COLORS.white} />
@@ -80,5 +89,6 @@ const styles = StyleSheet.create({
 		marginVertical: 20,
 		color: COLORS.black,
 		zIndex: 99,
+		paddingHorizontal: 20,
 	},
 });
